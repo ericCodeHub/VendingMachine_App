@@ -10,10 +10,11 @@ namespace Capstone
     {
         
         
-        const string AUDIT_REPORT_LOG_PATH = @"C:\Users\Student\workspace\module1-capstone-c-team-7\Example Files\Log1.txt";
-        const string SALES_REPORT_LOG_PATH = @"C:\Users\Student\workspace\module1-capstone-c-team-7\Example Files\SalesReport1.txt";
-        const string INVENTORY_LIST_PATH = @"C:\Users\Student\workspace\module1-capstone-c-team-7\Example Files\Inventory.txt";
-
+        const string AUDIT_REPORT_LOG_PATH = @"C:\Users\ericm\OneDrive\Documents\GitHub\module1-capstone-c-team-7\dotnet\Capstone\Log.txt";
+        const string SALES_REPORT_LOG_PATH = @"C:\Users\ericm\OneDrive\Documents\GitHub\module1-capstone-c-team-7\dotnet\Capstone\SalesReport.txt";
+        const string INVENTORY_LIST_PATH = @"Inventory.txt";
+        
+        
 
         private Dictionary<string, int> endOfDaySalesReport = new Dictionary<string, int>();
         public Dictionary<string, ProductInventory> ProductList = new Dictionary<string, ProductInventory>();
@@ -109,7 +110,7 @@ namespace Capstone
             string slot = "Slot";
             string name = "Name";
             string purchasePrice = "Purchase Price";
-            Console.WriteLine($"{slot}".PadLeft(3) + $"{name,0}".PadRight(22) + $"{purchasePrice}");
+            Console.WriteLine($"  {slot,-6}{name,-20}{purchasePrice,-6}".ToUpper());
             foreach (KeyValuePair<string, ProductInventory> product in ProductList)
             {
                 if (product.Value.AmountOfProduct == 0)
@@ -117,7 +118,7 @@ namespace Capstone
                     Console.WriteLine("SOLD OUT");
                     continue;
                 }
-                Console.WriteLine($"{product.Value.Slot}".PadLeft(3) + $"{product.Value.Name,0}".PadRight(22) + $" {product.Value.Price,0:c}");
+                Console.WriteLine($"   {product.Value.Slot,-6}{product.Value.Name,-20}{product.Value.Price,-6:C}");
 
             }
         }
