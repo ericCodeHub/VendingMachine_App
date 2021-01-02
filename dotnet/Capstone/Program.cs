@@ -18,7 +18,7 @@ namespace Capstone
 
 
         private const string PURCHASE_MENU_OPTION_UPDATEBALANCE = "Add Money To Purchase Items(1, 2, 5, 10, 20)";
-        private const string PURCHASE_MENU_ITEM = "Select An Item To Purchase or enter 0 to cancel";
+        private const string PURCHASE_MENU_ITEM = "Select An Item To Purchase";
         private const string PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
         private readonly string[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_OPTION_UPDATEBALANCE, PURCHASE_MENU_ITEM, PURCHASE_MENU_OPTION_FINISH_TRANSACTION };
         private readonly IBasicUserInterface ui = new MenuDrivenCLI();
@@ -26,7 +26,7 @@ namespace Capstone
         private readonly string[] ARRAY_OF_SLOTS = {"0", "D4", "D3", "D2", "D1", "C4", "C3", "C2", "C1", "B4", "B3", "B2", "B1", "A4", "A3", "A2", "A1" };
 
         public VendingMachine vm = new VendingMachine();
-        string machineTopAndBottom = new string('-', 30);
+        string machineTopAndBottom = new string('-', 30);//can be used to separate content after menu selections
 
         static void Main(string[] args)
         {
@@ -83,7 +83,7 @@ namespace Capstone
                     }
 
                     int deposit = int.Parse(depositCheck.ToString());
-                    vm.GetBalance(deposit);
+                    vm.DepositFunds(deposit);
                 }
                 else if (selection == PURCHASE_MENU_ITEM)
                 {
@@ -96,7 +96,7 @@ namespace Capstone
                     else
                     {
                         
-                        Console.WriteLine(selection);
+                        Console.WriteLine($"{selection} or enter 0 to cancel");
 
                         object validSlotCheck = "";
                         while (validSlotCheck == null || (object)validSlotCheck == "")
@@ -120,7 +120,7 @@ namespace Capstone
                 }
                 else if (selection == PURCHASE_MENU_OPTION_FINISH_TRANSACTION)
                 {
-                    isTransactionFinished = vm.FinishTransaction();
+                    isTransactionFinished = vm.FinishTransaction(machineTopAndBottom);
                 }
             }
         }

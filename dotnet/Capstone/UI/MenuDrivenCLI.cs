@@ -48,11 +48,11 @@ namespace Capstone
             try
             {
                 
-                if (options.Length > 4)
+                if (options.Length > 4)//selecting products for purchase will have more then 4 options
                 {
-                    choice = (options.Contains(userInput.ToUpper())) ? userInput: null;
+                    choice = options.Contains(userInput.ToUpper()) ? userInput: null;
                 }
-                else if (int.Parse(userInput) > 0 && int.Parse(userInput) <= options.Length)
+                else if (int.Parse(userInput) > 0 && int.Parse(userInput) <= options.Length)//this means the user is on one of the first two menus
                 {
                     choice = options[int.Parse(userInput) - 1];
                 }

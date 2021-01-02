@@ -10,8 +10,8 @@ namespace Capstone
     {
         
         
-        const string AUDIT_REPORT_LOG_PATH = @"C:\Users\ericm\OneDrive\Documents\GitHub\module1-capstone-c-team-7\dotnet\Capstone\Log.txt";
-        const string SALES_REPORT_LOG_PATH = @"C:\Users\ericm\OneDrive\Documents\GitHub\module1-capstone-c-team-7\dotnet\Capstone\SalesReport.txt";
+        const string AUDIT_REPORT_LOG_PATH = @"C:\Users\ericm\OneDrive\Documents\GitHub\VendingMachine_App\dotnet\Capstone\Log.txt";
+        const string SALES_REPORT_LOG_PATH = @"C:\Users\ericm\OneDrive\Documents\GitHub\VendingMachine_App\dotnet\Capstone\SalesReport.txt";
         const string INVENTORY_LIST_PATH = @"Inventory.txt";
         
         
@@ -45,19 +45,19 @@ namespace Capstone
                 return product.OutPutMessage;
             }
         }
-        public bool FinishTransaction()
+        public bool FinishTransaction(string border)
         {
-            decimal previousBalance = Balance;
+            decimal previousBalance = Balance;//previous balance is also the amount of change for customer
             string changeCount = GetChange();
 
-            Console.WriteLine("You are getting back a " + Balance + " in change in the following coin amounts: \n" +
+            Console.WriteLine("You are getting back {previousBalance,0:C} in change in the following coin amounts: \n" +
                 changeCount);
             
-            WriteToAuditLog($"{DateTime.Now} GIVE CHANGE: {previousBalance,0:C} {Balance,0:C}");
+            WriteToAuditLog($"{DateTime.Now} GIVE CHANGE: {previousBalance,0:C} {Balance,0:C}\n{border}");
 
             return true;
         }
-        public void GetBalance(int deposit)
+        public void DepositFunds(int deposit)
         {
             Balance += deposit;
             WriteToAuditLog($"{DateTime.Now} FEED MONEY: {deposit,0:C} {Balance,0:C}");
@@ -172,9 +172,33 @@ namespace Capstone
         {
             using (StreamWriter sw = new StreamWriter(SALES_REPORT_LOG_PATH, false))
             {
+
+                
+                int lengthOfProductSoldKey;
+                int longestItem = 12;//column width will be at least 12 characters
+                
                 foreach (KeyValuePair<string, int> countProductSold in endOfDaySalesReport)
                 {
-                    sw.WriteLine(countProductSold.Key + " | " + countProductSold.Value);
+                    lengthOfProductSoldKey = countProductSold.Key.Length;//determines length of product name
+                    if (lengthOfProductSoldKey > longestItem)
+                    {
+                        longestItem = lengthOfProductSoldKey;
+                        //longestItem holds the value of the longest productName
+                    }
+                }
+                string headerWithDate = $"Report Generated on {DateTime.Now}";
+
+                string headerSpacer = new string(' ', longestItem - 4);
+                sw.WriteLine(headerWithDate);
+                sw.WriteLine(new string('-', headerWithDate.Length)); 
+                sw.WriteLine($"ITEM{headerSpacer} SOLD");
+                sw.WriteLine($"----{new string(' ', longestItem - 4)} ----");
+                
+
+                    foreach (KeyValuePair<string, int> countProductSold in endOfDaySalesReport)
+                {
+                    string productSpacer = new string('.', longestItem - countProductSold.Key.Length);//this spacer is used to set column length in StreamWriter
+                    sw.WriteLine($"{countProductSold.Key}{productSpacer} | {countProductSold.Value}");
                 }
                 sw.WriteLine($"\n **TOTAL SALES** {TotalSales,0:C}");
             }

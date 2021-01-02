@@ -99,9 +99,9 @@ namespace CapstoneTests
             VendingMachine vm = new VendingMachine();
             vm.CreateUpdateVendingMachineInventory();
 
-            vm.GetBalance(2);
-            vm.GetBalance(1);
-            vm.GetBalance(10);
+            vm.DepositFunds(2);
+            vm.DepositFunds(1);
+            vm.DepositFunds(10);
 
             Assert.AreEqual(13, vm.Balance);
         }
